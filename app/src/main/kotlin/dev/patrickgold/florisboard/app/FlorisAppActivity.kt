@@ -22,6 +22,8 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -217,7 +219,11 @@ class FlorisAppActivity : ComponentActivity() {
 
     @Composable
     private fun ImeUiWrapper(showKeyboard: Boolean) {
-        AnimatedVisibility(visible = showKeyboard) {
+        AnimatedVisibility(
+            visible = showKeyboard,
+            enter = expandVertically(),
+            exit = shrinkVertically(),
+        ) {
             ProvideLocalizedResources(resourcesContext) {
                 ProvideKeyboardRowBaseHeight {
                     CompositionLocalProvider(LocalInputActivityFeedbackController provides inputFeedbackController) {
