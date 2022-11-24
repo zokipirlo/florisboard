@@ -72,6 +72,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import dev.patrickgold.florisboard.app.FlorisAppActivity
+import dev.patrickgold.florisboard.app.SecureInputConnection
 import dev.patrickgold.florisboard.app.devtools.DevtoolsOverlay
 import dev.patrickgold.florisboard.app.florisPreferenceModel
 import dev.patrickgold.florisboard.ime.ImeUiMode
@@ -141,12 +142,20 @@ class FlorisImeService : LifecycleInputMethodService() {
         private val InlineSuggestionUiSmallestSize = Size(0, 0)
         private val InlineSuggestionUiBiggestSize = Size(Int.MAX_VALUE, Int.MAX_VALUE)
 
+        private var secureInputConnection: SecureInputConnection? = null
+
         fun currentInputConnection(): InputConnection? {
-            return FlorisImeServiceReference.get()?.currentInputConnection
+//            return CustomEditText.appInputConnection
+            return secureInputConnection
+//            return FlorisImeServiceReference.get()?.currentInputConnection
+        }
+
+        fun setSecureInputConnection(conn: SecureInputConnection?) {
+            secureInputConnection = conn
         }
 
         fun inputFeedbackController(): InputFeedbackController? {
-            return FlorisImeServiceReference.get()?.inputFeedbackController
+            return null//FlorisImeServiceReference.get()?.inputFeedbackController
         }
 
         /**

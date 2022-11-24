@@ -85,7 +85,7 @@ abstract class AbstractEditorInstance(context: Context) {
         return runBlocking { expectedContentQueue.peekNewestOrNull() }
     }
 
-    private fun currentInputConnection() = FlorisImeService.currentInputConnection()
+    protected fun currentInputConnection() = FlorisImeService.currentInputConnection()
 
     open fun handleStartInput(editorInfo: FlorisEditorInfo) {
         activeInfo = editorInfo

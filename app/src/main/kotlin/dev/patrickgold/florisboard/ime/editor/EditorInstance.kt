@@ -61,8 +61,6 @@ class EditorInstance(context: Context) : AbstractEditorInstance(context) {
     val phantomSpace = PhantomSpaceState()
     val massSelection = MassSelectionState()
 
-    private fun currentInputConnection() = FlorisImeService.currentInputConnection()
-
     override fun handleStartInputView(editorInfo: FlorisEditorInfo, isRestart: Boolean) {
         if (!prefs.correction.rememberCapsLockState.get()) {
             activeState.inputShiftState = InputShiftState.UNSHIFTED

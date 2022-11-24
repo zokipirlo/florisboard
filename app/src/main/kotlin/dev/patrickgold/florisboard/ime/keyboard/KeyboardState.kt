@@ -230,6 +230,7 @@ class ObservableKeyboardState private constructor(
     /**
      * Dispatches the new state to all observers if [batchEditCount] is [BATCH_ZERO] (= no active batch edits).
      */
+
     private fun dispatchState() {
         if (batchEditCount.get() == BATCH_ZERO) {
             dispatchFlow.value = this.snapshot()

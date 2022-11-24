@@ -77,6 +77,7 @@ import androidx.emoji2.text.EmojiCompat
 import androidx.emoji2.widget.EmojiTextView
 import com.google.accompanist.flowlayout.FlowRow
 import dev.patrickgold.florisboard.R
+import dev.patrickgold.florisboard.app.LocalInputActivityFeedbackController
 import dev.patrickgold.florisboard.app.florisPreferenceModel
 import dev.patrickgold.florisboard.editorInstance
 import dev.patrickgold.florisboard.ime.input.LocalInputFeedbackController
@@ -249,7 +250,7 @@ private fun EmojiCategoriesTabRow(
     activeCategory: EmojiCategory,
     onCategoryChange: (EmojiCategory) -> Unit,
 ) {
-    val inputFeedbackController = LocalInputFeedbackController.current
+    val inputFeedbackController = LocalInputActivityFeedbackController.current
     val tabStyle = FlorisImeTheme.style.get(element = FlorisImeUi.EmojiTab)
     val tabStyleFocused = FlorisImeTheme.style.get(element = FlorisImeUi.EmojiTab, isFocus = true)
     val unselectedContentColor = tabStyle.foreground.solidColor(default = FlorisImeTheme.fallbackContentColor())
@@ -303,7 +304,7 @@ private fun EmojiKey(
     onEmojiInput: (Emoji) -> Unit,
     onLongPress: (Emoji) -> Unit,
 ) {
-    val inputFeedbackController = LocalInputFeedbackController.current
+    val inputFeedbackController = LocalInputActivityFeedbackController.current
     val base = emojiSet.base(withSkinTone = preferredSkinTone)
     val variations = emojiSet.variations(withoutSkinTone = preferredSkinTone)
     var showVariantsBox by remember { mutableStateOf(false) }

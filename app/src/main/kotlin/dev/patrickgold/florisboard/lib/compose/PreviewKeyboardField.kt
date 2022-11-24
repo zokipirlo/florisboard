@@ -16,6 +16,7 @@
 
 package dev.patrickgold.florisboard.lib.compose
 
+import android.view.View
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -32,6 +33,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,12 +50,15 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalTextInputService
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.patrickgold.florisboard.R
+import dev.patrickgold.florisboard.app.SecureTextInputService
 import dev.patrickgold.florisboard.lib.android.showShortToast
 import dev.patrickgold.florisboard.lib.util.InputMethodUtils
 
@@ -79,11 +84,17 @@ class PreviewFieldController {
 @Composable
 fun PreviewKeyboardField(
     controller: PreviewFieldController,
+    openKeyboard: (Boolean) -> Unit = {},
     modifier: Modifier = Modifier,
-    hint: String = stringRes(R.string.settings__preview_keyboard),
+    hint: String = stringRes(R.string.settings__preview_keyboard)
 ) {
     val context = LocalContext.current
     val focusManager = LocalFocusManager.current
+    val view = LocalView.current
+
+    val inputService = remember {
+        SecureTextInputService(view, openKeyboard)
+    }
 
     AnimatedVisibility(
         visible = controller.isVisible,
@@ -91,53 +102,55 @@ fun PreviewKeyboardField(
         exit = PreviewExitTransition,
     ) {
         SelectionContainer {
-            TextField(
-                modifier = modifier
-                    .height(56.dp)
-                    .fillMaxWidth()
-                    .onPreviewKeyEvent { event ->
-                        if (event.key == Key.Back) {
-                            focusManager.clearFocus()
-                        }
-                        false
-                    }
-                    .focusRequester(controller.focusRequester),
-                value = controller.text,
-                onValueChange = { controller.text = it },
-                textStyle = LocalTextStyle.current.copy(textDirection = TextDirection.ContentOrLtr),
-                placeholder = {
-                    Text(
-                        text = hint,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
-                    )
-                },
-                trailingIcon = {
-                    Row {
-                        IconButton(onClick = {
-                            if (!InputMethodUtils.showImePicker(context)) {
-                                context.showShortToast("Error: InputMethodManager service not available!")
+            CompositionLocalProvider(LocalTextInputService provides inputService) {
+                TextField(
+                    modifier = modifier
+                        .height(56.dp)
+                        .fillMaxWidth()
+                        .onPreviewKeyEvent { event ->
+                            if (event.key == Key.Back) {
+                                focusManager.clearFocus()
                             }
-                        }) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_keyboard),
-                                contentDescription = null,
-                            )
+                            false
                         }
-                    }
-                },
-                keyboardActions = KeyboardActions(
-                    onDone = { focusManager.clearFocus() },
-                ),
-                keyboardOptions = KeyboardOptions(autoCorrect = true),
-                singleLine = true,
-                shape = RectangleShape,
-                colors = TextFieldDefaults.textFieldColors(
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    disabledIndicatorColor = Color.Transparent,
-                ),
-            )
+                        .focusRequester(controller.focusRequester),
+                    value = controller.text,
+                    onValueChange = { controller.text = it },
+                    textStyle = LocalTextStyle.current.copy(textDirection = TextDirection.ContentOrLtr),
+                    placeholder = {
+                        Text(
+                            text = hint,
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 1,
+                        )
+                    },
+                    trailingIcon = {
+                        Row {
+                            IconButton(onClick = {
+                                if (!InputMethodUtils.showImePicker(context)) {
+                                    context.showShortToast("Error: InputMethodManager service not available!")
+                                }
+                            }) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_keyboard),
+                                    contentDescription = null,
+                                )
+                            }
+                        }
+                    },
+                    keyboardActions = KeyboardActions(
+                        onDone = { focusManager.clearFocus() },
+                    ),
+                    keyboardOptions = KeyboardOptions(autoCorrect = true),
+                    singleLine = true,
+                    shape = RectangleShape,
+                    colors = TextFieldDefaults.textFieldColors(
+                        focusedIndicatorColor = Color.Transparent,
+                        unfocusedIndicatorColor = Color.Transparent,
+                        disabledIndicatorColor = Color.Transparent,
+                    ),
+                )
+            }
         }
     }
 }
