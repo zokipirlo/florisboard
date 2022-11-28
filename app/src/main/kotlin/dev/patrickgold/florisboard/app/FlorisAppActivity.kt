@@ -20,6 +20,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -196,6 +197,10 @@ class FlorisAppActivity : ComponentActivity() {
                 ) {
                     var showKeyboard by remember {
                         mutableStateOf(false)
+                    }
+
+                    BackHandler(enabled = showKeyboard) {
+                        showKeyboard = false
                     }
 
                     Routes.AppNavHost(

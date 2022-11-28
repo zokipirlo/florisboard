@@ -23,6 +23,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -105,7 +106,7 @@ fun PreviewKeyboardField(
             CompositionLocalProvider(LocalTextInputService provides inputService) {
                 TextField(
                     modifier = modifier
-                        .height(56.dp)
+                        .heightIn(56.dp, 120.dp)
                         .fillMaxWidth()
                         .onPreviewKeyEvent { event ->
                             if (event.key == Key.Back) {
@@ -142,7 +143,7 @@ fun PreviewKeyboardField(
                         onDone = { focusManager.clearFocus() },
                     ),
                     keyboardOptions = KeyboardOptions(autoCorrect = true),
-                    singleLine = true,
+                    singleLine = false,
                     shape = RectangleShape,
                     colors = TextFieldDefaults.textFieldColors(
                         focusedIndicatorColor = Color.Transparent,
