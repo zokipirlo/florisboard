@@ -25,4 +25,5 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.mannodermaus.android.junit5) apply false
     alias(libs.plugins.mikepenz.aboutlibraries) apply false
+    id("com.android.library") version "7.3.1" apply false
 }

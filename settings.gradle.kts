@@ -34,3 +34,4 @@ dependencyResolutionManagement {
 
 include(":app")
 include(":benchmark")
+include(":florislib")

@@ -121,16 +121,9 @@
             </intent-filter>
         </activity>
 
-        <!-- Crash Dialog Activity -->
-        <activity
-            android:name="dev.patrickgold.florisboard.lib.crashutility.CrashDialogActivity"
-            android:icon="@mipmap/floris_app_icon"
-            android:label="@string/crash_dialog__title"
-            android:theme="@style/CrashDialogTheme"/>
-
         <!-- Clipboard Media File Provider -->
         <provider
-            android:name="dev.patrickgold.florisboard.ime.clipboard.provider.ClipboardMediaProvider"
+            android:name="dev.patrickgold.florisboard.core.ime.clipboard.provider.ClipboardMediaProvider"
             android:authorities="${applicationId}.provider.clipboard"
             android:grantUriPermissions="true"
             android:exported="false">

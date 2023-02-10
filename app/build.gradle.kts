@@ -31,8 +31,7 @@ plugins {
 
 android {
     namespace = "dev.patrickgold.florisboard"
-    compileSdk = 32
-    buildToolsVersion = "31.0.0"
+    compileSdk = 33
     ndkVersion = "22.1.7171670"
 
     compileOptions {
@@ -51,20 +50,14 @@ android {
 
     defaultConfig {
         applicationId = "dev.patrickgold.florisboard"
-        minSdk = 24
-        targetSdk = 31
+        minSdk = 27
+        targetSdk = 33
         versionCode = 90
         versionName = "0.4.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "BUILD_COMMIT_HASH", "\"${getGitCommitHash()}\"")
-
-        ksp {
-            arg("room.schemaLocation", "$projectDir/schemas")
-            arg("room.incremental", "true")
-            arg("room.expandProjection", "true")
-        }
 
         externalNativeBuild {
             cmake {
@@ -80,12 +73,6 @@ android {
 
         sourceSets {
             maybeCreate("main").apply {
-                assets {
-                    srcDirs("src/main/assets", "src/main/icu4c/prebuilt/assets")
-                }
-                jniLibs {
-                    srcDirs("src/main/icu4c/prebuilt/jniLibs")
-                }
                 java {
                     srcDirs("src/main/kotlin")
                 }
@@ -112,7 +99,7 @@ android {
 
     externalNativeBuild {
         cmake {
-            path("src/main/cpp/CMakeLists.txt")
+            path("../florislib/src/main/cpp/CMakeLists.txt")
         }
     }
 
@@ -191,6 +178,7 @@ tasks.withType<Test> {
 }
 
 dependencies {
+    implementation(project(":florislib"))
     implementation(libs.accompanist.flowlayout)
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.androidx.activity.compose)
