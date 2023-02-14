@@ -143,22 +143,6 @@ class FlorisImeService : LifecycleInputMethodService() {
         private val InlineSuggestionUiSmallestSize = Size(0, 0)
         private val InlineSuggestionUiBiggestSize = Size(Int.MAX_VALUE, Int.MAX_VALUE)
 
-        private var secureInputConnection: SecureInputConnection? = null
-
-        fun currentInputConnection(): InputConnection? {
-//            return CustomEditText.appInputConnection
-            return secureInputConnection
-//            return FlorisImeServiceReference.get()?.currentInputConnection
-        }
-
-        fun setSecureInputConnection(conn: SecureInputConnection?) {
-            secureInputConnection = conn
-        }
-
-        fun inputFeedbackController(): InputFeedbackController? {
-            return null//FlorisImeServiceReference.get()?.inputFeedbackController
-        }
-
         /**
          * Hides the IME and launches [FlorisAppActivity].
          */

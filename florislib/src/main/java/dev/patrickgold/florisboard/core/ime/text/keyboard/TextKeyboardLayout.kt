@@ -63,6 +63,7 @@ import androidx.compose.ui.unit.toSize
 import dev.patrickgold.florisboard.FlorisImeService
 import dev.patrickgold.florisboard.app.florisPreferenceModel
 import dev.patrickgold.florisboard.core.FlorisboardLibrary
+import dev.patrickgold.florisboard.core.InputConnectionProvider
 import dev.patrickgold.florisboard.core.ime.input.InputEventDispatcher
 import dev.patrickgold.florisboard.core.ime.keyboard.ComputingEvaluator
 import dev.patrickgold.florisboard.core.ime.keyboard.FlorisImeSizing
@@ -444,7 +445,7 @@ private class TextKeyboardLayoutController(
     private val keyboardManager by lazy { FlorisboardLibrary.keyboardManager }
 
     private val inputEventDispatcher get() = keyboardManager.inputEventDispatcher
-    private val inputFeedbackController get() = FlorisImeService.inputFeedbackController()
+    private val inputFeedbackController get() = InputConnectionProvider.inputFeedbackController()
     private val keyHintConfiguration = prefs.keyboard.keyHintConfiguration()
     private val pointerMap: PointerMap<TouchPointer> = PointerMap { TouchPointer() }
     lateinit var popupUiController: PopupUiController

@@ -25,6 +25,7 @@ import android.view.KeyEvent
 import android.view.inputmethod.InputConnection
 import dev.patrickgold.florisboard.FlorisImeService
 import dev.patrickgold.florisboard.core.FlorisboardLibrary
+import dev.patrickgold.florisboard.core.InputConnectionProvider
 import dev.patrickgold.florisboard.core.ime.nlp.BreakIteratorGroup
 import dev.patrickgold.florisboard.core.ime.text.composing.Composer
 import dev.patrickgold.florisboard.core.lib.ext.ExtensionComponentName
@@ -83,7 +84,7 @@ abstract class AbstractEditorInstance() {
         return runBlocking { expectedContentQueue.peekNewestOrNull() }
     }
 
-    protected fun currentInputConnection() = FlorisImeService.currentInputConnection()
+    protected fun currentInputConnection() = InputConnectionProvider.currentInputConnection()
 
     open fun handleStartInput(editorInfo: FlorisEditorInfo) {
         activeInfo = editorInfo

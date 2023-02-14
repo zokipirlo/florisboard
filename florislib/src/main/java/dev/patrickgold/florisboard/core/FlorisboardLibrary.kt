@@ -35,6 +35,7 @@ object FlorisboardLibrary {
     lateinit var versionName: String
     var versionCode: Int = 0
     var appIconId: Int = 0
+    var debug: Boolean = false
 
     private const val ICU_DATA_ASSET_PATH = "icu/icudt69l.dat"
 
@@ -68,6 +69,7 @@ object FlorisboardLibrary {
         versionName: String,
         versionCode: Int,
         appIconId: Int,
+        debug: Boolean,
     ) {
         this.applicationContext = applicationContext
         this.applicationId = applicationId
@@ -75,12 +77,13 @@ object FlorisboardLibrary {
         this.versionName = versionName
         this.versionCode = versionCode
         this.appIconId = appIconId
+        this.debug = debug
 
         try {
             JetPref.configure(saveIntervalMs = 500)
             Flog.install(
                 context = applicationContext,
-                isFloggingEnabled = BuildConfig.DEBUG,
+                isFloggingEnabled = debug,
                 flogTopics = LogTopic.ALL,
                 flogLevels = Flog.LEVEL_ALL,
                 flogOutputs = Flog.OUTPUT_CONSOLE,

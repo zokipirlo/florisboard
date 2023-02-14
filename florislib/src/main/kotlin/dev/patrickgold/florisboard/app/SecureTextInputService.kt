@@ -3,8 +3,6 @@ package dev.patrickgold.florisboard.app
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.BaseInputConnection
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputConnection
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.EditCommand
 import androidx.compose.ui.text.input.ImeAction
@@ -12,8 +10,8 @@ import androidx.compose.ui.text.input.ImeOptions
 import androidx.compose.ui.text.input.PlatformTextInputService
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.TextInputService
-import dev.patrickgold.florisboard.FlorisImeService
 import dev.patrickgold.florisboard.SecureInputConnectionCallback
+import dev.patrickgold.florisboard.core.InputConnectionProvider
 
 class SecurePlatformTextInputService(
     val view: View,
@@ -51,13 +49,13 @@ class SecurePlatformTextInputService(
                 }
 
                 override fun onConnectionClosed(ic: SecureInputConnection) {
-                    FlorisImeService.setSecureInputConnection(null)
+                    InputConnectionProvider.setSecureInputConnection(null)
                 }
 
             },
             false
         ).also {
-            FlorisImeService.setSecureInputConnection(it)
+            InputConnectionProvider.setSecureInputConnection(it)
         }
     }
 

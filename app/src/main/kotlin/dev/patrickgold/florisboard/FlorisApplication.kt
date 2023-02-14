@@ -31,7 +31,8 @@ class FlorisApplication : Application() {
             getString(R.string.floris_app_name),
             BuildConfig.VERSION_NAME,
             BuildConfig.VERSION_CODE,
-            R.mipmap.floris_app_icon
+            R.mipmap.floris_app_icon,
+            BuildConfig.DEBUG
         )
     }
 }

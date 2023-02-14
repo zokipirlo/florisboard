@@ -27,6 +27,7 @@ import androidx.lifecycle.MutableLiveData
 import dev.patrickgold.florisboard.FlorisImeService
 import dev.patrickgold.florisboard.app.florisPreferenceModel
 import dev.patrickgold.florisboard.core.FlorisboardLibrary
+import dev.patrickgold.florisboard.core.InputConnectionProvider
 import dev.patrickgold.florisboard.core.R
 import dev.patrickgold.florisboard.core.ime.core.DisplayLanguageNamesIn
 import dev.patrickgold.florisboard.core.ime.core.Subtype
@@ -769,7 +770,7 @@ class KeyboardManager(private val appContext: Context) : InputKeyEventReceiver {
     }
 
     override fun onInputKeyRepeat(data: KeyData) {
-        FlorisImeService.inputFeedbackController()?.keyRepeatedAction(data)
+        InputConnectionProvider.inputFeedbackController()?.keyRepeatedAction(data)
         when (data.code) {
             KeyCode.ARROW_DOWN,
             KeyCode.ARROW_LEFT,
