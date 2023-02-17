@@ -3,7 +3,7 @@ package dev.patrickgold.florisboard
 import android.view.KeyEvent
 import androidx.compose.ui.text.input.EditCommand
 import androidx.compose.ui.text.input.ImeAction
-import dev.patrickgold.florisboard.app.SecureInputConnection
+import dev.patrickgold.florisboard.core.ime.input.SecureInputConnection
 
 interface SecureInputConnectionCallback {
     /**

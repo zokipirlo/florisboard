@@ -50,7 +50,7 @@ android {
 
     defaultConfig {
         applicationId = "dev.patrickgold.florisboard"
-        minSdk = 27
+        minSdk = 26
         targetSdk = 33
         versionCode = 90
         versionName = "0.4.0"
@@ -58,18 +58,6 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "BUILD_COMMIT_HASH", "\"${getGitCommitHash()}\"")
-
-        externalNativeBuild {
-            cmake {
-                cFlags("-fvisibility=hidden", "-DU_STATIC_IMPLEMENTATION=1")
-                cppFlags("-fvisibility=hidden", "-std=c++17", "-fexceptions", "-ffunction-sections", "-fdata-sections", "-DU_DISABLE_RENAMING=1", "-DU_STATIC_IMPLEMENTATION=1")
-                arguments("-DANDROID_STL=c++_static")
-            }
-        }
-
-        ndk {
-            abiFilters += listOf("armeabi-v7a", "arm64-v8a")
-        }
 
         sourceSets {
             maybeCreate("main").apply {
@@ -97,12 +85,6 @@ android {
         kotlinCompilerExtensionVersion = libs.versions.androidx.compose.compiler.get()
     }
 
-    externalNativeBuild {
-        cmake {
-            path("../florislib/src/main/cpp/CMakeLists.txt")
-        }
-    }
-
     buildTypes {
         named("debug") {
             applicationIdSuffix = ".debug"
@@ -110,11 +92,6 @@ android {
 
             isDebuggable = true
             isJniDebuggable = false
-
-            ndk {
-                // For running FlorisBoard on the emulator
-                abiFilters += listOf("x86", "x86_64")
-            }
 
             resValue("mipmap", "floris_app_icon", "@mipmap/ic_app_icon_debug")
             resValue("mipmap", "floris_app_icon_round", "@mipmap/ic_app_icon_debug_round")
@@ -151,11 +128,6 @@ android {
             initWith(getByName("release"))
             signingConfig = signingConfigs.getByName("debug")
             matchingFallbacks += listOf("release")
-
-            ndk {
-                // For running FlorisBoard on the emulator
-                abiFilters += listOf("x86", "x86_64")
-            }
         }
     }
 

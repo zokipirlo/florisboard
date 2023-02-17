@@ -1,22 +1,49 @@
+import java.io.File
+import java.io.FileInputStream
+import java.util.*
+
 plugins {
     id("com.android.library")
+    id("org.gradle.maven-publish")
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.mannodermaus.android.junit5)
 }
 
+val prop = Properties().apply {
+    load(FileInputStream(File(rootProject.rootDir, "local.properties")))
+}
 
 android {
     namespace = "dev.patrickgold.florisboard.core"
     compileSdk = 33
 
     defaultConfig {
-        minSdk = 27
+        minSdk = 26
         targetSdk = 33
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        externalNativeBuild {
+            cmake {
+                cFlags("-fvisibility=hidden", "-DU_STATIC_IMPLEMENTATION=1")
+                cppFlags("-fvisibility=hidden", "-std=c++17", "-fexceptions", "-ffunction-sections", "-fdata-sections", "-DU_DISABLE_RENAMING=1", "-DU_STATIC_IMPLEMENTATION=1")
+                arguments("-DANDROID_STL=c++_static")
+            }
+
+        }
+
+        ndk {
+            abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86_64")
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path("src/main/cpp/CMakeLists.txt")
+        }
     }
 
     ksp {
@@ -36,6 +63,12 @@ android {
             java {
                 srcDirs("src/main/kotlin")
             }
+        }
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
         }
     }
 
@@ -67,6 +100,35 @@ android {
             "-opt-in=kotlin.contracts.ExperimentalContracts",
             "-Xjvm-default=all-compatibility",
         )
+    }
+}
+
+afterEvaluate {
+    publishing {
+        val libVersion = "0.1.0.1"
+        publications {
+            register<MavenPublication>("release") {
+                groupId = "dev.patrickgold.florisboard"
+                artifactId = "florislib"
+                version = libVersion
+
+                afterEvaluate {
+                    from(components["release"])
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = "nexus"
+                url = uri(prop.getProperty("nexusUrl").toString())
+                isAllowInsecureProtocol = true
+                credentials {
+                    username = prop.getProperty("nexusUsername").toString()
+                    password = prop.getProperty("nexusPassword").toString()
+                }
+            }
+        }
     }
 }
 

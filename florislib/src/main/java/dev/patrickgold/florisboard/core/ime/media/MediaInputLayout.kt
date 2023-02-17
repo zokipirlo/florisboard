@@ -46,8 +46,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import dev.patrickgold.florisboard.app.LocalInputActivityFeedbackController
 import dev.patrickgold.florisboard.core.FlorisboardLibrary
+import dev.patrickgold.florisboard.core.LocalInputFeedbackController
 import dev.patrickgold.florisboard.core.R
 import dev.patrickgold.florisboard.core.ime.input.InputEventDispatcher
 import dev.patrickgold.florisboard.core.ime.keyboard.FlorisImeSizing
@@ -117,7 +117,7 @@ internal fun KeyboardLikeButton(
     keyData: KeyData,
     content: @Composable RowScope.() -> Unit,
 ) {
-    val inputFeedbackController = LocalInputActivityFeedbackController.current
+    val inputFeedbackController = LocalInputFeedbackController.current
     var isPressed by remember { mutableStateOf(false) }
     val keyStyle = FlorisImeTheme.style.get(
         element = FlorisImeUi.EmojiKey,

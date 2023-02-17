@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package dev.patrickgold.florisboard.app
+package dev.patrickgold.florisboard.core.ime.input
 
 import android.app.Activity
-import android.content.Context
 import android.media.AudioManager
 import android.provider.Settings
 import android.view.HapticFeedbackConstants
-import androidx.compose.runtime.staticCompositionLocalOf
-import dev.patrickgold.florisboard.core.ime.input.HapticVibrationMode
-import dev.patrickgold.florisboard.core.ime.input.InputFeedbackActivationMode
+import dev.patrickgold.florisboard.app.florisPreferenceModel
 import dev.patrickgold.florisboard.core.ime.keyboard.KeyData
 import dev.patrickgold.florisboard.core.ime.text.key.KeyCode
 import dev.patrickgold.florisboard.core.ime.text.keyboard.TextKeyData
@@ -37,13 +34,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
-val LocalInputActivityFeedbackController = staticCompositionLocalOf<InputActivityFeedbackController> { error("not init") }
-
 /**
  * Input feedback controller is responsible to process and perform audio and haptic
  * feedback for user interactions based on the system and floris preferences.
  */
-class InputActivityFeedbackController private constructor(private val context: Activity) {
+class InputActivityFeedbackController private constructor(private val context: Activity) : InputFeedbackController {
     companion object {
         fun new(context: Activity) = InputActivityFeedbackController(context)
     }
@@ -58,46 +53,47 @@ class InputActivityFeedbackController private constructor(private val context: A
     private var systemAudioEnabled: Boolean = false
     private var systemHapticEnabled: Boolean = false
 
-    fun updateSystemPrefsState() {
+    override fun updateSystemPrefsState() {
         systemAudioEnabled = systemPref(Settings.System.SOUND_EFFECTS_ENABLED)
         systemHapticEnabled = systemPref(Settings.System.HAPTIC_FEEDBACK_ENABLED)
     }
 
-    fun keyPress(data: KeyData = TextKeyData.UNSPECIFIED) {
+    override fun keyPress(data: KeyData) {
         if (prefs.inputFeedback.audioFeatKeyPress.get()) performAudioFeedback(data, 1.0)
         if (prefs.inputFeedback.hapticFeatKeyPress.get()) performHapticFeedback(data, 1.0)
     }
 
-    fun keyLongPress(data: KeyData = TextKeyData.UNSPECIFIED) {
+    override fun keyLongPress(data: KeyData) {
         if (prefs.inputFeedback.audioFeatKeyLongPress.get()) performAudioFeedback(data, 0.7)
         if (prefs.inputFeedback.hapticFeatKeyLongPress.get()) performHapticFeedback(data, 0.4)
     }
 
-    fun keyRepeatedAction(data: KeyData = TextKeyData.UNSPECIFIED) {
+    override fun keyRepeatedAction(data: KeyData) {
         if (prefs.inputFeedback.audioFeatKeyRepeatedAction.get()) performAudioFeedback(data, 0.4)
         if (prefs.inputFeedback.hapticFeatKeyRepeatedAction.get()) performHapticFeedback(data, 0.05)
     }
 
-    fun gestureSwipe(data: KeyData = TextKeyData.UNSPECIFIED) {
+    override fun gestureSwipe(data: KeyData) {
         if (prefs.inputFeedback.audioFeatGestureSwipe.get()) performAudioFeedback(data, 0.7)
         if (prefs.inputFeedback.hapticFeatGestureSwipe.get()) performHapticFeedback(data, 0.4)
     }
 
-    fun gestureMovingSwipe(data: KeyData = TextKeyData.UNSPECIFIED) {
+    override fun gestureMovingSwipe(data: KeyData) {
         if (prefs.inputFeedback.audioFeatGestureMovingSwipe.get()) performAudioFeedback(data, 0.4)
         if (prefs.inputFeedback.hapticFeatGestureMovingSwipe.get()) performHapticFeedback(data, 0.05)
     }
 
-    private fun systemPref(id: String): Boolean {
+    override fun systemPref(id: String): Boolean {
         if (contentResolver == null) return false
         return Settings.System.getInt(contentResolver, id, 0) != 0
     }
 
-    private fun performAudioFeedback(data: KeyData, factor: Double) {
+    override fun performAudioFeedback(data: KeyData, factor: Double) {
         if (audioManager == null) return
         if (!prefs.inputFeedback.audioEnabled.get()) return
         if (prefs.inputFeedback.audioActivationMode.get() ==
-            InputFeedbackActivationMode.RESPECT_SYSTEM_SETTINGS && !systemAudioEnabled) return
+            InputFeedbackActivationMode.RESPECT_SYSTEM_SETTINGS && !systemAudioEnabled
+        ) return
 
         scope.launch {
             val volume = (prefs.inputFeedback.audioVolume.get() * factor) / 100.0
@@ -114,21 +110,23 @@ class InputActivityFeedbackController private constructor(private val context: A
         }
     }
 
-    private fun performHapticFeedback(data: KeyData, factor: Double) {
+    override fun performHapticFeedback(data: KeyData, factor: Double) {
         if (vibrator == null) return
         if (!prefs.inputFeedback.hapticEnabled.get()) return
         if (prefs.inputFeedback.hapticActivationMode.get() ==
-            InputFeedbackActivationMode.RESPECT_SYSTEM_SETTINGS && !systemHapticEnabled) return
+            InputFeedbackActivationMode.RESPECT_SYSTEM_SETTINGS && !systemHapticEnabled
+        ) return
 
         scope.launch {
             if (prefs.inputFeedback.hapticVibrationMode.get() == HapticVibrationMode.USE_HAPTIC_FEEDBACK_INTERFACE) {
-                val view =  context.window.decorView
+                val view = context.window.decorView
                 val hfc = if (factor < 1.0 && AndroidVersion.ATLEAST_API27_O_MR1) {
                     HapticFeedbackConstants.TEXT_HANDLE_MOVE
                 } else {
                     HapticFeedbackConstants.KEYBOARD_TAP
                 }
-                val didPerform = view.performHapticFeedback(hfc,
+                val didPerform = view.performHapticFeedback(
+                    hfc,
                     HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING or
                         HapticFeedbackConstants.FLAG_IGNORE_GLOBAL_SETTING
                 )

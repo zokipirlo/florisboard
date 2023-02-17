@@ -61,8 +61,10 @@ import androidx.navigation.compose.rememberNavController
 import dev.patrickgold.florisboard.app.apptheme.FlorisAppTheme
 import dev.patrickgold.florisboard.app.devtools.DevtoolsOverlay
 import dev.patrickgold.florisboard.core.FlorisboardLibrary
+import dev.patrickgold.florisboard.core.LocalInputFeedbackController
 import dev.patrickgold.florisboard.core.R
 import dev.patrickgold.florisboard.core.ime.clipboard.ClipboardInputLayout
+import dev.patrickgold.florisboard.core.ime.input.InputActivityFeedbackController
 import dev.patrickgold.florisboard.core.ime.keyboard.ProvideKeyboardRowBaseHeight
 import dev.patrickgold.florisboard.core.ime.media.MediaInputLayout
 import dev.patrickgold.florisboard.core.ime.onehanded.OneHandedMode
@@ -230,7 +232,7 @@ class FlorisAppActivity : ComponentActivity() {
         ) {
             ProvideLocalizedResources(resourcesContext) {
                 ProvideKeyboardRowBaseHeight {
-                    CompositionLocalProvider(LocalInputActivityFeedbackController provides inputFeedbackController) {
+                    CompositionLocalProvider(LocalInputFeedbackController provides inputFeedbackController) {
                         FlorisImeTheme {
                             Column(modifier = Modifier.fillMaxWidth()) {
 //                            if (!(isFullscreenUiMode && isExtractUiShown)) {

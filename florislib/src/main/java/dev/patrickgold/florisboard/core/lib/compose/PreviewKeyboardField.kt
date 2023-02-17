@@ -16,13 +16,11 @@
 
 package dev.patrickgold.florisboard.core.lib.compose
 
-import android.view.View
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -59,7 +57,7 @@ import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import dev.patrickgold.florisboard.core.R
-import dev.patrickgold.florisboard.app.SecureTextInputService
+import dev.patrickgold.florisboard.core.ime.input.SecureTextInputService
 import dev.patrickgold.florisboard.core.lib.android.showShortToast
 import dev.patrickgold.florisboard.core.lib.util.InputMethodUtils
 

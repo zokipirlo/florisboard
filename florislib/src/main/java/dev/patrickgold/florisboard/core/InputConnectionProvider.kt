@@ -1,8 +1,12 @@
 package dev.patrickgold.florisboard.core
 
 import android.view.inputmethod.InputConnection
-import dev.patrickgold.florisboard.app.SecureInputConnection
+import androidx.compose.runtime.staticCompositionLocalOf
 import dev.patrickgold.florisboard.core.ime.input.InputFeedbackController
+import dev.patrickgold.florisboard.core.ime.input.InputServiceFeedbackController
+import dev.patrickgold.florisboard.core.ime.input.SecureInputConnection
+
+val LocalInputFeedbackController = staticCompositionLocalOf<InputFeedbackController> { error("not init") }
 
 object InputConnectionProvider {
     private var secureInputConnection: SecureInputConnection? = null

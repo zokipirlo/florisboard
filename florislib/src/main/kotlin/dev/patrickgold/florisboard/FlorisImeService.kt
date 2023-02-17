@@ -31,7 +31,6 @@ import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InlineSuggestionsRequest
 import android.view.inputmethod.InlineSuggestionsResponse
-import android.view.inputmethod.InputConnection
 import android.view.inputmethod.InputMethodInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
@@ -72,16 +71,15 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import dev.patrickgold.florisboard.app.FlorisAppActivity
-import dev.patrickgold.florisboard.app.SecureInputConnection
 import dev.patrickgold.florisboard.app.devtools.DevtoolsOverlay
 import dev.patrickgold.florisboard.app.florisPreferenceModel
 import dev.patrickgold.florisboard.core.FlorisboardLibrary
+import dev.patrickgold.florisboard.core.LocalInputFeedbackController
 import dev.patrickgold.florisboard.core.R
 import dev.patrickgold.florisboard.core.ime.clipboard.ClipboardInputLayout
 import dev.patrickgold.florisboard.core.ime.editor.EditorRange
 import dev.patrickgold.florisboard.core.ime.editor.FlorisEditorInfo
-import dev.patrickgold.florisboard.core.ime.input.InputFeedbackController
-import dev.patrickgold.florisboard.core.ime.input.LocalInputFeedbackController
+import dev.patrickgold.florisboard.core.ime.input.InputServiceFeedbackController
 import dev.patrickgold.florisboard.core.ime.keyboard.FlorisImeSizing
 import dev.patrickgold.florisboard.core.ime.keyboard.ProvideKeyboardRowBaseHeight
 import dev.patrickgold.florisboard.core.ime.landscapeinput.LandscapeInputUiMode
@@ -251,7 +249,7 @@ class FlorisImeService : LifecycleInputMethodService() {
     private val activeState get() = keyboardManager.activeState
     private var inputWindowView by mutableStateOf<View?>(null)
     private var inputViewSize by mutableStateOf(IntSize.Zero)
-    private val inputFeedbackController by lazy { InputFeedbackController.new(this) }
+    private val inputFeedbackController by lazy { InputServiceFeedbackController.new(this) }
     private var isWindowShown: Boolean = false
     private var isFullscreenUiMode by mutableStateOf(false)
     private var isExtractUiShown by mutableStateOf(false)

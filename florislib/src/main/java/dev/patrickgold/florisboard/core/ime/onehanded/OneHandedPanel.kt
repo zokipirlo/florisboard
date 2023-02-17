@@ -25,10 +25,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import dev.patrickgold.florisboard.core.R
-import dev.patrickgold.florisboard.app.LocalInputActivityFeedbackController
 import dev.patrickgold.florisboard.app.florisPreferenceModel
-import dev.patrickgold.florisboard.core.ime.input.LocalInputFeedbackController
+import dev.patrickgold.florisboard.core.LocalInputFeedbackController
+import dev.patrickgold.florisboard.core.R
 import dev.patrickgold.florisboard.core.ime.theme.FlorisImeTheme
 import dev.patrickgold.florisboard.core.ime.theme.FlorisImeUi
 import dev.patrickgold.florisboard.core.lib.compose.stringRes
@@ -42,7 +41,7 @@ fun RowScope.OneHandedPanel(
     weight: Float,
 ) {
     val prefs by florisPreferenceModel()
-    val inputFeedbackController = LocalInputActivityFeedbackController.current
+    val inputFeedbackController = LocalInputFeedbackController.current
     val oneHandedPanelStyle = FlorisImeTheme.style.get(FlorisImeUi.OneHandedPanel)
     Column(
         modifier = modifier

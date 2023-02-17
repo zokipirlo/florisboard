@@ -1,4 +1,4 @@
-package dev.patrickgold.florisboard.app
+package dev.patrickgold.florisboard.core.ime.input
 
 import android.os.Bundle
 import android.os.Handler
