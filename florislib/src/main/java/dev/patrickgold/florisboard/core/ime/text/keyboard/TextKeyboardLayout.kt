@@ -18,6 +18,7 @@ package dev.patrickgold.florisboard.core.ime.text.keyboard
 
 import android.animation.ValueAnimator
 import android.content.Context
+import android.util.Log
 import android.view.MotionEvent
 import android.view.animation.AccelerateInterpolator
 import androidx.compose.foundation.border
@@ -888,6 +889,44 @@ private class TextKeyboardLayoutController(
                                     editorInstance.massSelection.begin()
                                 }
                                 keyboardManager.handleArrow(KeyCode.ARROW_RIGHT, count)
+                            }
+                        }
+                        true
+                    } else {
+                        action != SwipeAction.NO_ACTION
+                    }
+                }
+                SwipeGesture.Direction.UP -> {
+                    val action = prefs.gestures.spaceBarSwipeUp.get()
+                    if (action == SwipeAction.MOVE_CURSOR_UP) {
+                        abs(event.relUnitCountX).let {
+                            val count = if (!pointer.hasTriggeredGestureMove) it - 1 else it
+                            if (count > 0) {
+                                inputFeedbackController?.gestureMovingSwipe(TextKeyData.SPACE)
+                                if (!pointer.hasTriggeredMassSelection) {
+                                    pointer.hasTriggeredMassSelection = true
+                                    editorInstance.massSelection.begin()
+                                }
+                                keyboardManager.handleArrow(KeyCode.ARROW_UP, count)
+                            }
+                        }
+                        true
+                    } else {
+                        action != SwipeAction.NO_ACTION
+                    }
+                }
+                SwipeGesture.Direction.DOWN -> {
+                    val action = prefs.gestures.spaceBarSwipeDown.get()
+                    if (action == SwipeAction.MOVE_CURSOR_DOWN) {
+                        abs(event.relUnitCountX).let {
+                            val count = if (!pointer.hasTriggeredGestureMove) it - 1 else it
+                            if (count > 0) {
+                                inputFeedbackController?.gestureMovingSwipe(TextKeyData.SPACE)
+                                if (!pointer.hasTriggeredMassSelection) {
+                                    pointer.hasTriggeredMassSelection = true
+                                    editorInstance.massSelection.begin()
+                                }
+                                keyboardManager.handleArrow(KeyCode.ARROW_DOWN, count)
                             }
                         }
                         true

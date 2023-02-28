@@ -205,7 +205,11 @@ class AppPrefs : PreferenceModel("florisboard-app-prefs") {
         )
         val spaceBarSwipeUp = enum(
             key = "gestures__space_bar_swipe_up",
-            default = SwipeAction.NO_ACTION,
+            default = SwipeAction.MOVE_CURSOR_UP,
+        )
+        val spaceBarSwipeDown = enum(
+            key = "gestures__space_bar_swipe_down",
+            default = SwipeAction.MOVE_CURSOR_DOWN,
         )
         val spaceBarSwipeLeft = enum(
             key = "gestures__space_bar_swipe_left",
